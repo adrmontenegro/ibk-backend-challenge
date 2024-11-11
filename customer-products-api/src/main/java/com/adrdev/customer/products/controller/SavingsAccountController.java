@@ -1,6 +1,7 @@
 package com.adrdev.customer.products.controller;
 
 import com.adrdev.customer.products.service.SavingsAccountService;
+import com.adrdev.customers.products.api.CustomerSavingsAccountsApi;
 import com.adrdev.customers.products.model.SavingsAccountResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,10 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class SavingsAccountController {
+public class SavingsAccountController implements CustomerSavingsAccountsApi {
 
     private final SavingsAccountService savingsAccountService;
 
-    @GetMapping("/savings-accounts/{customerCode}")
     public ResponseEntity<List<SavingsAccountResponse>> getSavingsAccounts(@PathVariable("customerCode") String customerCode) {
         return ResponseEntity.ok(savingsAccountService.findSavingsAccountsByCustomerCode(customerCode));
     }

@@ -1,7 +1,7 @@
 package com.adrdev.customer.products.service.impl;
 
 import com.adrdev.customer.products.mapper.SavingsAccountMapper;
-import com.adrdev.customer.products.persistence.SavingsAccountEntityRepository;
+import com.adrdev.customer.products.persistence.SavingsAccountRepository;
 import com.adrdev.customer.products.service.SavingsAccountService;
 import com.adrdev.customers.products.model.SavingsAccountResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SavingsAccountServiceImpl implements SavingsAccountService {
 
-    private final SavingsAccountEntityRepository savingsAccountRepository;
+    private final SavingsAccountRepository savingsAccountRepository;
     private final SavingsAccountMapper savingsAccountMapper;
 
     @Override

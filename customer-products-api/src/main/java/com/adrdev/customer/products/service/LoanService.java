@@ -1,10 +1,11 @@
 package com.adrdev.customer.products.service;
 
-//import com.adrdev.customers.products.model.LoanResponseInner;
+
+import com.adrdev.customers.products.model.LoanResponse;
 
 import java.util.List;
 
 public interface LoanService {
-//    List<LoanResponseInner> findLoansByCustomerCode(String customerCode);
+    List<LoanResponse> findLoansByCustomerCode(String customerCode);
 
 }
