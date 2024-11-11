@@ -1,0 +1,186 @@
+openapi: 3.0.3
+info:
+  title: Banking Customer Products API
+  description: API for retrieving the banking products (savings accounts, credit cards, loans) of a customer based on their unique code.
+  version: 1.0.0
+  contact:
+    name: Your Company
+    email: contact@yourcompany.com
+
+paths:
+  /customers/{unique_code}/savings-accounts:
+    get:
+      summary: Get Savings Accounts for a customer
+      operationId: getSavingsAccounts
+      parameters:
+        - name: unique_code
+          in: path
+          required: true
+          description: The unique identifier for the customer.
+          schema:
+            type: string
+            example: "abc123-unique-id"
+      responses:
+        '200':
+          description: A list of savings accounts associated with the customer.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SavingsAccount'
+        '404':
+          description: Customer not found or no savings accounts associated with the customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /customers/{unique_code}/credit-cards:
+    get:
+      summary: Get Credit Cards for a customer
+      operationId: getCreditCards
+      parameters:
+        - name: unique_code
+          in: path
+          required: true
+          description: The unique identifier for the customer.
+          schema:
+            type: string
+            example: "abc123-unique-id"
+      responses:
+        '200':
+          description: A list of credit cards associated with the customer.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditCard'
+        '404':
+          description: Customer not found or no credit cards associated with the customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /customers/{unique_code}/loans:
+    get:
+      summary: Get Loans for a customer
+      operationId: getLoans
+      parameters:
+        - name: unique_code
+          in: path
+          required: true
+          description: The unique identifier for the customer.
+          schema:
+            type: string
+            example: "abc123-unique-id"
+      responses:
+        '200':
+          description: A list of loans associated with the customer.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Loan'
+        '404':
+          description: Customer not found or no loans associated with the customer.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    SavingsAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+        balance:
+          type: number
+          format: float
+        interest_rate:
+          type: number
+          format: float
+        min_balance:
+          type: number
+          format: float
+        withdrawal_limit:
+          type: integer
+    CreditCard:
+      type: object
+      properties:
+        card_id:
+          type: string
+        credit_limit:
+          type: number
+          format: float
+        interest_rate:
+          type: number
+          format: float
+        current_balance:
+          type: number
+          format: float
+        minimum_payment:
+          type: number
+          format: float
+        due_date:
+          type: string
+          format: date
+    Loan:
+      type: object
+      properties:
+        loan_id:
+          type: string
+        principal_amount:
+          type: number
+          format: float
+        interest_rate:
+          type: number
+          format: float
+        loan_term:
+          type: integer
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        monthly_payment:
+          type: number
+          format: float
+        outstanding_balance:
+          type: number
+          format: float
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: A unique code identifying the error.
+          example: "NOT_FOUND"
+        description:
+          type: string
+          description: A detailed description of the error.
+          example: "The customer with the provided unique code was not found."
