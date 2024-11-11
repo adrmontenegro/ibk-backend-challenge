@@ -68,7 +68,8 @@ tasks {
 				useSwaggerUI: "true",
 				openApiNullable: "false",
 				useBeanValidation: "true",
-				useSpringBoot3: "true"
+				useSpringBoot3: "true",
+				useTags: "true"
 		]
 	}
 
