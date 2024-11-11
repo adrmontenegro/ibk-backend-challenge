@@ -1,0 +1,87 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id 'org.openapi.generator' version '7.8.0'
+}
+
+group = 'com.adrdev'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//	Persistence Postgresql
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	//	Lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	//	Mapstruct
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+	// Swagger Annotations
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.6.0' // Or a compatible version
+
+	// Bean Validation API (for request validation)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	//Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks {
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
+
+	openApiGenerate {
+		generatorName = "spring"
+		inputSpec = "$rootDir/src/main/resources/spec/customer-products-api.yaml"
+		outputDir = "$buildDir/generated-sources"
+		apiPackage = "com.adrdev.customers.products.api"
+		modelPackage = "com.adrdev.customers.products.model"
+		configOptions = [
+				interfaceOnly: "true", // Generate interfaces for controllers (best practice)
+				dateLibrary: "java8",
+				java17: "true",
+				useSwaggerUI: "true",
+				openApiNullable: "false",
+				useBeanValidation: "true",
+				useSpringBoot3: "true",
+				useTags: "true"
+		]
+	}
+
+	// Tell Gradle where to find the generated code
+	sourceSets {
+		main {
+			java {
+				srcDir "$buildDir/generated-sources/src/main/java"
+			}
+		}
+	}
+
+	// Ensure OpenAPI code generation runs before compilation
+	tasks.compileJava.dependsOn(tasks.openApiGenerate)
+}

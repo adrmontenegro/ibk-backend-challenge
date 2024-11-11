@@ -1,0 +1,228 @@
+openapi: 3.0.3
+info:
+  title: Banking Products API
+  description: This API retrieves the saving accounts, credit cards, and loans for banking customers.
+  version: 1.0.0
+
+paths:
+  /customers/{customer_code}/savings_accounts:
+    get:
+      summary: Get savings accounts for a customer
+      operationId: getSavingsAccounts
+      tags:
+        - Customer Savings Accounts
+      parameters:
+        - name: customer_code
+          in: path
+          description: Unique code of the customer
+          required: true
+          schema:
+            type: string
+            example: abc123-unique-id-001
+      responses:
+        '200':
+          description: List of savings accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SavingsAccountResponse'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /customers/{customer_code}/credit_cards:
+    get:
+      summary: Get credit cards for a customer
+      operationId: getCreditCards
+      tags:
+        - Customer Credit Cards
+      parameters:
+        - name: customer_code
+          in: path
+          description: Unique code of the customer
+          required: true
+          schema:
+            type: string
+            example: abc123-unique-id-001
+      responses:
+        '200':
+          description: List of credit cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CreditCardResponse'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /customers/{customer_code}/loans:
+    get:
+      summary: Get loans for a customer
+      operationId: getLoans
+      tags:
+        - Customer Loans
+      parameters:
+        - name: customer_code
+          in: path
+          description: Unique code of the customer
+          required: true
+          schema:
+            type: string
+            example: abc123-unique-id-001
+      responses:
+        '200':
+          description: List of loans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoanResponse'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ProductResponse:
+      type: object
+      properties:
+        product_name:
+          type: string
+          example: Savings Account
+        product_type:
+          type: string
+          example: savings_account
+
+    SavingsAccountResponse:
+      allOf:
+        - $ref: '#/components/schemas/ProductResponse'
+        - type: object
+          properties:
+            account_number:
+              type: string
+              example: SA-001-123456
+            balance:
+              type: number
+              format: float
+              example: 1000.00
+            interest_rate:
+              type: number
+              format: float
+              example: 1.5
+            min_balance:
+              type: number
+              format: float
+              example: 100.00
+            withdrawal_limit:
+              type: integer
+              example: 5
+
+    CreditCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/ProductResponse'
+        - type: object
+          properties:
+            card_number:
+              type: string
+              example: CC-001-1234567890123456
+            credit_limit:
+              type: number
+              format: float
+              example: 10000.00
+            interest_rate:
+              type: number
+              format: float
+              example: 14.0
+            due_date:
+              type: string
+              format: date
+              example: '2024-05-01'
+            billing_cycle:
+              type: integer
+              example: 30
+            current_balance:
+              type: number
+              format: float
+              example: 500.00
+            minimum_payment:
+              type: number
+              format: float
+              example: 100.00
+
+    LoanResponse:
+      allOf:
+        - $ref: '#/components/schemas/ProductResponse'
+        - type: object
+          properties:
+            loan_number:
+              type: string
+              example: LN-001-123456
+            principal_amount:
+              type: number
+              format: float
+              example: 10000.00
+            interest_rate:
+              type: number
+              format: float
+              example: 5.5
+            loan_term:
+              type: integer
+              example: 24
+            start_date:
+              type: string
+              format: date
+              example: '2024-01-01'
+            end_date:
+              type: string
+              format: date
+              example: '2025-01-01'
+            monthly_payment:
+              type: number
+              format: float
+              example: 450.00
+            outstanding_balance:
+              type: number
+              format: float
+              example: 5000.00
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          example: 'CUSTOMER_NOT_FOUND'
+        description:
+          type: string
+          example: 'The customer with the provided unique code was not found.'
