@@ -17,7 +17,7 @@ public class SavingsAccountController implements CustomerSavingsAccountsApi {
 
     private final SavingsAccountService savingsAccountService;
 
-    public ResponseEntity<List<SavingsAccountResponse>> getSavingsAccounts(@PathVariable("customerCode") String customerCode) {
+    public ResponseEntity<List<SavingsAccountResponse>> getSavingsAccounts( String customerCode) {
         return ResponseEntity.ok(savingsAccountService.findSavingsAccountsByCustomerCode(customerCode));
     }
 }

@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  postgres-db:
+    image: postgres:latest
+    container_name: my_postgres_db
+    environment:
+      - POSTGRES_USER=admin               # Replace with your username
+      - POSTGRES_PASSWORD=123456          # Replace with your password
+      - POSTGRES_DB=banking_challenge_db  # Replace with your desired database name
+    ports:
+      - "5432:5432" # Maps port 5432 in the container to port 5432 on your machine
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Persistent storage
+
+volumes:
+  pgdata:
