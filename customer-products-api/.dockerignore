@@ -1,0 +1,31 @@
+# Ignore build directories
+build/
+target/
+
+# Ignore IDE files
+.idea/
+.vscode/
+
+# Ignore Git metadata
+.git/
+
+# Ignore logs
+*.log
+
+# Ignore configuration files that might contain sensitive information
+application*.properties
+application*.yml
+
+# Ignore test results
+**/test-results/**
+
+# Ignore Maven wrapper (if using Gradle)
+.mvn/
+
+# Ignore Gradle wrapper (if using Maven)
+gradle/
+gradle.properties
+
+# Ignore Dockerfile and docker-compose.yml (optional, but can be useful)
+# Dockerfile
+# docker-compose.yml
